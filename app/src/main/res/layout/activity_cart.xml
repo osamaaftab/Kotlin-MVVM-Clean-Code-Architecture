@@ -28,8 +28,12 @@
 
 
                 <ImageView
+                    android:id="@+id/back"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="@dimen/_10sdp"
                     android:src="@drawable/ic_left_arrow" />
 
