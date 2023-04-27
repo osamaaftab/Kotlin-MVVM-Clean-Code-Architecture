@@ -1,4 +1,4 @@
-package com.osamaaftab.dindinn.presentation.fragment
+package com.osamaaftab.dindinn.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.osamaaftab.dindinn.R
-import com.osamaaftab.dindinn.databinding.ActivityMainBinding
 import com.osamaaftab.dindinn.databinding.FragmentMenuBinding
 import com.osamaaftab.dindinn.domain.model.MenuItem
 import com.osamaaftab.dindinn.presentation.adapter.GenericListAdapter
@@ -20,7 +19,6 @@ import com.osamaaftab.dindinn.presentation.customview.SnapHelper
 import com.osamaaftab.dindinn.presentation.viewholder.MenuViewHolder
 import com.osamaaftab.dindinn.presentation.viewmodel.MenuViewModel
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MenuFragment : Fragment() {

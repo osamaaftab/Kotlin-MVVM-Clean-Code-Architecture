@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import com.osamaaftab.dindinn.domain.model.base.PagerItem
 
-abstract class GenericPagerAdpater(fragmentManager: FragmentManager) :
+abstract class GenericPagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     protected abstract fun getViewsCount(): Int

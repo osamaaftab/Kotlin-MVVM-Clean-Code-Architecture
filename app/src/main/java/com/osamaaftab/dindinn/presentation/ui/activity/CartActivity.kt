@@ -1,4 +1,4 @@
-package com.osamaaftab.dindinn.presentation
+package com.osamaaftab.dindinn.presentation.ui.activity
 
 import android.os.Bundle
 import android.view.View
@@ -8,21 +8,22 @@ import com.osamaaftab.dindinn.R
 import com.osamaaftab.dindinn.databinding.ActivityCartBinding
 import com.osamaaftab.dindinn.domain.model.MenuItem
 import com.osamaaftab.dindinn.domain.model.base.PagerItem
-import com.osamaaftab.dindinn.presentation.adapter.GenericPagerAdpater
-import com.osamaaftab.dindinn.presentation.fragment.BannerFragment
-import com.osamaaftab.dindinn.presentation.fragment.CartListFragment
+import com.osamaaftab.dindinn.presentation.adapter.GenericPagerAdapter
+import com.osamaaftab.dindinn.presentation.ui.activity.MainActivity.Companion.SELECTED_LIST
+import com.osamaaftab.dindinn.presentation.ui.fragment.BannerFragment
+import com.osamaaftab.dindinn.presentation.ui.fragment.CartListFragment
 
 
 class CartActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var activityCartBinding: ActivityCartBinding
-    private lateinit var cartPagerAdpater: GenericPagerAdpater
+    private lateinit var cartPagerAdapter: GenericPagerAdapter
     private lateinit var items: List<MenuItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar!!.hide()
+        supportActionBar?.hide()
         activityCartBinding = DataBindingUtil.setContentView(this, R.layout.activity_cart)
-        items = intent.getParcelableArrayListExtra("selected")
+        items = intent.getParcelableArrayListExtra(SELECTED_LIST)
         activityCartBinding.back.setOnClickListener(this)
         setFragmentAdapter()
     }
@@ -33,7 +34,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
         list.add(PagerItem(BannerFragment.newInstance(""), "Orders"))
         list.add(PagerItem(BannerFragment.newInstance(""), "Information"))
 
-        cartPagerAdpater = object : GenericPagerAdpater(supportFragmentManager) {
+        cartPagerAdapter = object : GenericPagerAdapter(supportFragmentManager) {
             override fun getViewsCount(): Int {
                 return list.size
             }
@@ -42,7 +43,7 @@ class CartActivity : AppCompatActivity(), View.OnClickListener {
                 return list
             }
         }
-        activityCartBinding.cartViewpager.adapter = cartPagerAdpater
+        activityCartBinding.cartViewpager.adapter = cartPagerAdapter
         activityCartBinding.viewpagertab.setViewPager(activityCartBinding.cartViewpager)
     }
 

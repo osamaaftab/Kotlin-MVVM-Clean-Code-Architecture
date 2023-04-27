@@ -1,4 +1,4 @@
-package com.osamaaftab.dindinn.presentation.fragment
+package com.osamaaftab.dindinn.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,10 +21,12 @@ class CartListFragment : Fragment() {
     private var menuAdapter: GenericListAdapter<MenuItem>? = null
 
     companion object {
+        private const val LIST = "LIST"
+
         @JvmStatic
         fun newInstance(items: List<MenuItem>) = CartListFragment().apply {
             arguments = Bundle().apply {
-                putParcelableArrayList("list", ArrayList(items))
+                putParcelableArrayList(LIST, ArrayList(items))
             }
         }
     }
@@ -36,9 +38,12 @@ class CartListFragment : Fragment() {
     ): View? {
         fragmentCartListBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_cart_list, container, false)
-        val list = arguments!!.getParcelableArrayList<MenuItem>("list")
-        initAdapter(list!!.toList())
-        fragmentCartListBinding.total.text = round(list.map { it.price }.sum()).toString() + " Usd"
+        val list = arguments?.getParcelableArrayList<MenuItem>(LIST)
+        if (list != null) {
+            initAdapter(list.toList())
+            fragmentCartListBinding.total.text =
+                round(list.map { it.price }.sum()).toString() + " Usd"
+        }
         return fragmentCartListBinding.root
     }
 

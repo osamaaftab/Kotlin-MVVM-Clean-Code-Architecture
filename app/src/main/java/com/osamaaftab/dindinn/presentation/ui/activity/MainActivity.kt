@@ -1,22 +1,20 @@
-package com.osamaaftab.dindinn
+package com.osamaaftab.dindinn.presentation.ui.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.material.appbar.AppBarLayout
+import com.osamaaftab.dindinn.R
 import com.osamaaftab.dindinn.databinding.ActivityMainBinding
 import com.osamaaftab.dindinn.domain.model.MenuItem
 import com.osamaaftab.dindinn.domain.model.base.PagerItem
-import com.osamaaftab.dindinn.presentation.CartActivity
-import com.osamaaftab.dindinn.presentation.adapter.GenericPagerAdpater
-import com.osamaaftab.dindinn.presentation.fragment.BannerFragment
-import com.osamaaftab.dindinn.presentation.fragment.MenuFragment
+import com.osamaaftab.dindinn.presentation.adapter.GenericPagerAdapter
+import com.osamaaftab.dindinn.presentation.ui.fragment.BannerFragment
+import com.osamaaftab.dindinn.presentation.ui.fragment.MenuFragment
 import com.osamaaftab.dindinn.presentation.viewmodel.BannerViewModel
 import com.osamaaftab.dindinn.presentation.viewmodel.MenuViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,14 +26,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val bannerViewModel: BannerViewModel by viewModel()
     private val menuViewModel: MenuViewModel by viewModel()
     private var bannerList: ArrayList<PagerItem> = ArrayList()
-    private var selectdList: List<MenuItem> = ArrayList()
-    private lateinit var menuPagerAdpater: GenericPagerAdpater
-    private lateinit var bannerPagerAdpater: GenericPagerAdpater
+    private var selectedList: List<MenuItem> = ArrayList()
+    private lateinit var menuPagerAdapter: GenericPagerAdapter
+    private lateinit var bannerPagerAdapter: GenericPagerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar!!.hide()
+        supportActionBar?.hide()
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         initObserver()
         activityMainBinding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         menuViewModel.getSelectedList().observe(this, Observer {
-            selectdList = it
+            selectedList = it
         })
 
 
@@ -80,7 +78,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 for (element in it.iterator()) {
                     bannerList.add(PagerItem(BannerFragment.newInstance(element.image_url)))
                 }
-                bannerPagerAdpater.notifyDataSetChanged()
+                bannerPagerAdapter.notifyDataSetChanged()
             })
 
         bannerViewModel.getOnError().observe(this, Observer {
@@ -89,8 +87,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initBannerAdapter() {
-        bannerPagerAdpater =
-            object : GenericPagerAdpater(this.supportFragmentManager) {
+        bannerPagerAdapter =
+            object : GenericPagerAdapter(this.supportFragmentManager) {
                 override fun getViewsCount(): Int {
                     return bannerList.size
                 }
@@ -99,7 +97,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     return bannerList
                 }
             }
-        activityMainBinding.bannerViewpager.adapter = bannerPagerAdpater
+        activityMainBinding.bannerViewpager.adapter = bannerPagerAdapter
         activityMainBinding.wormDotsIndicator.setViewPager(activityMainBinding.bannerViewpager)
     }
 
@@ -109,7 +107,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         list.add(PagerItem(MenuFragment.newInstance("fruit"), "fruit"))
         list.add(PagerItem(MenuFragment.newInstance("vegetable"), "vegetable"))
 
-        menuPagerAdpater = object : GenericPagerAdpater(supportFragmentManager) {
+        menuPagerAdapter = object : GenericPagerAdapter(supportFragmentManager) {
             override fun getViewsCount(): Int {
                 return list.size
             }
@@ -118,13 +116,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 return list
             }
         }
-        activityMainBinding.menuViewpager.adapter = menuPagerAdpater
+        activityMainBinding.menuViewpager.adapter = menuPagerAdapter
         activityMainBinding.viewpagertab.setViewPager(activityMainBinding.menuViewpager)
     }
 
     override fun onClick(p0: View?) {
-        var intent = Intent(this, CartActivity::class.java)
-        intent.putParcelableArrayListExtra("selected", ArrayList(selectdList))
+        val intent = Intent(this, CartActivity::class.java)
+        intent.putParcelableArrayListExtra(SELECTED_LIST, ArrayList(selectedList))
         startActivity(intent)
+    }
+
+    companion object{
+        const val SELECTED_LIST = "SELECTED_LIST"
     }
 }

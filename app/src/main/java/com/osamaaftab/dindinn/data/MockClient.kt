@@ -26,7 +26,7 @@ class MockClient(context: Context) : Interceptor {
                 .body(
                     ResponseBody.create(
                         MediaType.parse("application/json"),
-                        responseString!!.toByteArray()
+                        responseString.toByteArray()
                     )
                 )
                 .addHeader("content-type", "application/json")

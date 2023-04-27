@@ -1,4 +1,4 @@
-package com.osamaaftab.dindinn.presentation.fragment
+package com.osamaaftab.dindinn.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,10 +15,12 @@ class BannerFragment : Fragment() {
     lateinit var fragmentBannerImageBinding: FragmentBannerImageBinding
 
     companion object {
+        private const val URL  = "URL"
+
         @JvmStatic
         fun newInstance(url: String) = BannerFragment().apply {
             arguments = Bundle().apply {
-                putString("url", url)
+                putString(URL, url)
             }
         }
     }
@@ -30,7 +32,7 @@ class BannerFragment : Fragment() {
     ): View? {
         fragmentBannerImageBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_banner_image, container, false)
-        fragmentBannerImageBinding.galleryImage.load(arguments!!.getString("url"))
+        fragmentBannerImageBinding.galleryImage.load(arguments?.getString(URL))
         return fragmentBannerImageBinding.root
     }
 }
